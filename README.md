@@ -17,7 +17,7 @@
 ### As library
 
 ```python
-from page_loader import page_downloader
+from page_loader import page_loader
 
 file_path = download('https://ru.hexlet.io/courses', '/var/tmp')
 print(file_path)  # => '/var/tmp/ru-hexlet-io-courses.html'
