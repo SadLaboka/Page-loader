@@ -24,3 +24,23 @@ print(file_path)  # => '/var/tmp/ru-hexlet-io-courses.html'
 ```
 
 ### As CLI tool
+```
+page-loader -h
+usage: page-loader [-h] [--output OUTPUT] link
+
+Page-loader
+
+positional arguments:
+  link
+
+options:
+  -h, --help       show this help message and exit
+  --output OUTPUT  set the save path
+```
+
+## Saving HTML:
+<details>
+  <summary>Click to show</summary>
+  
+[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/save_html.svg)](https://asciinema.org/a/MaWAZXjCpEkYA3vk7OueoOsNK)
+</details>
