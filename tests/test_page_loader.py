@@ -3,9 +3,7 @@ import requests_mock
 import tempfile
 from page_loader.page_loader import (
     download,
-    get_content,
-    get_name,
-    delete_extension
+    get_content
 )
 
 
@@ -15,18 +13,6 @@ def test_get_content():
     with requests_mock.Mocker() as m:
         m.get(link, text=text)
         assert get_content(link) == text
-
-
-def test_get_filename():
-    test_link = 'https://ru.hexlet.io/courses'
-    result = 'ru-hexlet-io-courses'
-    assert get_name(test_link) == result
-
-
-def test_delete_extension():
-    link = 'http://test.com/25.html'
-    result = 'http://test.com/25'
-    assert delete_extension(link) == result
 
 
 def test_download():
