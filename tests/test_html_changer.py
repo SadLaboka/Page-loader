@@ -3,11 +3,10 @@ import pytest
 import requests_mock
 import tempfile
 from bs4 import BeautifulSoup
-from page_loader.image_loader import (
-    get_content,
+from page_loader.html_changer import (
     save_image,
     change_image_path,
-    download_images
+    change_html
 )
 
 content = b'123213testtest'
@@ -29,7 +28,7 @@ def soup_fixture():
     return soup
 
 
-def test_download_images(soup_fixture):
+def test_change_html(soup_fixture):
     root = 'https://ru.hexlet.io/'
     image_name = 'ru-hexlet-io-assets-professions-nodejs.png'
     html = soup_fixture.prettify()
@@ -38,7 +37,7 @@ def test_download_images(soup_fixture):
     with open('tests/fixtures/after.html') as file:
         after = file.read()
     with tempfile.TemporaryDirectory() as tmpdirname:
-        updated_html = download_images(
+        updated_html = change_html(
             html,
             root,
             name,
@@ -69,10 +68,3 @@ def test_save_image():
         save_image(full_path, content)
         file = open(full_path, 'rb')
         assert file.read() == content
-
-
-def test_get_content():
-    link = 'https://test.com/'
-    with requests_mock.Mocker() as m:
-        m.get(link, content=content)
-        assert get_content(link) == content

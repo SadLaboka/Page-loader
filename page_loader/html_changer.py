@@ -3,15 +3,16 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from page_loader.filename_changer import get_name, add_extension
+from page_loader.http_request import get_request
 
 
-def download_images(
+def change_html(
         html: str,
         root: str,
         name: str,
         output: str,
         client=requests) -> str:
-    """Parse html page and download found images"""
+    """Parse html page, downloads files and changes html"""
     soup = BeautifulSoup(html, 'html.parser')
     items = soup.find_all('img')
     if items:
@@ -23,32 +24,23 @@ def download_images(
             if image_path.startswith('/'):
                 image_name = get_name(root) + get_name(image_path)
                 image_url = root + image_path
-            else:
-                image_url = image_path
-                image_name = get_name(image_path)
-            image_extension = image_url.split('.')[-1]
-            full_image_name = add_extension(image_name, image_extension)
-            full_image_path = os.path.join(path, full_image_name)
-            content = get_content(image_url, client)
-            save_image(full_image_path, content)
-            image_local_path = os.path.join(dir_name, full_image_name)
-            change_image_path(image_local_path, item)
+                image_extension = image_url.split('.')[-1]
+                full_image_name = add_extension(image_name, image_extension)
+                full_image_path = os.path.join(path, full_image_name)
+                content = get_request(image_url, 'byte', client)
+                save_image(full_image_path, content)
+                image_local_path = os.path.join(dir_name, full_image_name)
+                change_image_path(image_local_path, item)
     updated_html = soup.prettify()
     return updated_html
 
 
 def save_image(full_path: str, content: bytes) -> None:
-    """Saves the image locally"""
+    """Saves the file locally"""
     with open(full_path, 'wb') as file:
         file.write(content)
 
 
 def change_image_path(local_path: str, item) -> None:
-    """Changes the image link to a local path"""
+    """Changes the file link to a local path"""
     item['src'] = local_path
-
-
-def get_content(link: str, client=requests) -> bytes:
-    """Gets the image in bytes"""
-    response = client.get(link)
-    return response.content

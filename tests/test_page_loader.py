@@ -1,18 +1,7 @@
 import os
 import requests_mock
 import tempfile
-from page_loader.page_loader import (
-    download,
-    get_html
-)
-
-
-def test_get_html():
-    text = 'successful'
-    link = 'http://test.com'
-    with requests_mock.Mocker() as m:
-        m.get(link, text=text)
-        assert get_html(link) == text
+from page_loader.page_loader import download
 
 
 def test_download():
