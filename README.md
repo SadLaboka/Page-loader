@@ -38,9 +38,7 @@ options:
   --output OUTPUT  set the save path
 ```
 
-## Saving HTML:
-<details>
-  <summary>Click to show</summary>
-  
-[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/save_html.svg)](https://asciinema.org/a/MaWAZXjCpEkYA3vk7OueoOsNK)
-</details>
+## Saving page:
+
+[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/MaWAZXjCpEkYA3vk7OueoOsNK)
+
