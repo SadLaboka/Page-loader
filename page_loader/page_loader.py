@@ -1,6 +1,5 @@
 """Download content from a web page and save it to a files"""
 import os
-import re
 from page_loader.filename_changer import get_name, add_extension
 from page_loader.file_saver import save_file
 from page_loader.html_changer import change_html
