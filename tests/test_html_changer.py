@@ -1,20 +1,23 @@
 import os
 import pytest
-import requests_mock
 import tempfile
 from bs4 import BeautifulSoup
 from page_loader.html_changer import (
-    save_image,
-    change_image_path,
-    change_html
+    change_file_path,
+    change_html,
+    create_file_info,
+    get_file_path,
+    get_items
 )
 
 content = b'123213testtest'
+root = 'https://ru.hexlet.io'
 
 
 class FakeClient:
-    def __init__(self, content):
+    def __init__(self, content, text):
         self.content = content
+        self.text = text
 
     def get(self, link):
         return self
@@ -29,7 +32,7 @@ def soup_fixture():
 
 
 def test_change_html(soup_fixture):
-    root = 'https://ru.hexlet.io/'
+    text = 'test text'
     image_name = 'ru-hexlet-io-assets-professions-nodejs.png'
     html = soup_fixture.prettify()
     name = 'ru-hexlet-io-courses'
@@ -42,7 +45,7 @@ def test_change_html(soup_fixture):
             root,
             name,
             tmpdirname,
-            client=FakeClient(content))
+            client=FakeClient(content, text))
         path = os.path.join(tmpdirname, dir_name)
         full_image_path = os.path.join(path, image_name)
         assert updated_html == after
@@ -53,18 +56,33 @@ def test_change_html(soup_fixture):
         assert image_content == content
 
 
-def test_change_image_path(soup_fixture):
+def test_change_file_path(soup_fixture):
     soup = soup_fixture
     image = soup.find('img')
     new_path = '/local/dir/123.png'
-    change_image_path(new_path, image)
+    change_file_path(new_path, image)
     assert image.get('src') == new_path
 
 
-def test_save_image():
-    file_name = 'test-com-testtest.png'
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        full_path = os.path.join(tmpdirname, file_name)
-        save_image(full_path, content)
-        file = open(full_path, 'rb')
-        assert file.read() == content
+def test_get_file_path(soup_fixture):
+    soup = soup_fixture
+    tag = soup.img
+    path = tag.get('src')
+    assert get_file_path(tag, root) == path
+
+
+def test_get_items(soup_fixture):
+    soup = soup_fixture
+    items = soup.find_all(['img', 'script', 'link'])
+    assert get_items(soup) == items
+
+
+def test_create_file_info():
+    path = '/var/tmp/'
+    file_path = '/content/25.jpg'
+    result = {
+        'path': '/var/tmp/ru-hexlet-io-content-25.jpg',
+        'name': 'ru-hexlet-io-content-25.jpg',
+        'url': 'https://ru.hexlet.io/content/25.jpg'
+    }
+    assert create_file_info(path, root, file_path) == result

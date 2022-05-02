@@ -2,7 +2,8 @@ from page_loader.filename_changer import (
     add_extension,
     delete_extension,
     get_name,
-    remove_trailing_slash
+    remove_trailing_slash,
+    get_root
 )
 
 
@@ -46,3 +47,9 @@ def test_remove_trailing_slash():
     result = 'http://test.com'
     assert remove_trailing_slash(link) == result
     assert remove_trailing_slash(result) == result
+
+
+def test_get_root():
+    link = 'https://test.com/content/add.png'
+    result = 'https://test.com'
+    assert get_root(link) == result

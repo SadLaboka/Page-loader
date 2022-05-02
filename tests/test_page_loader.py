@@ -14,4 +14,4 @@ def test_download():
             download(link, tmpdirname)
             full_path = os.path.join(tmpdirname, filename)
             file = open(full_path)
-            assert file.read() == text
+            assert file.read() == text + '\n'
