@@ -35,6 +35,8 @@ def remove_trailing_slash(host_and_path: str) -> str:
 
 def add_extension(filename: str, extension: str) -> str:
     """Adds extension to filename"""
+    if '?' in extension:
+        extension = extension.split('?')[0]
     return '.'.join([filename, extension])
 
 

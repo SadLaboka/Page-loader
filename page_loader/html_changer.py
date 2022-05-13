@@ -35,7 +35,7 @@ def change_html(
                 file_info = create_file_info(path, root, file_path)
                 content = get_request(
                     file_info.get('url'),
-                    'byte', client)
+                    client)
                 save_file(content, file_info.get('path'))
                 file_local_path = os.path.join(
                     dir_name,

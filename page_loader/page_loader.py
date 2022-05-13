@@ -8,10 +8,10 @@ from page_loader.http_request import get_request
 
 def download(link: str, output: str):
     """Downloads web-page"""
-    html = get_request(link, 'text')
+    html = get_request(link).decode()
     page_name = get_name(link)
     updated_html = change_html(html, link, page_name, output)
     filename = add_extension(page_name, 'html')
     full_path = os.path.join(output, filename)
-    save_file(updated_html, full_path)
+    save_file(bytes(updated_html, 'utf-8'), full_path)
     return full_path
