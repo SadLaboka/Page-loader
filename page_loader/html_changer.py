@@ -1,6 +1,6 @@
 """Works with files and their paths"""
 import os
-
+import re
 import bs4.element
 import requests
 from bs4 import BeautifulSoup
@@ -24,6 +24,7 @@ def change_html(
     soup = BeautifulSoup(html, 'html.parser')
     items = get_items(soup)
     root = get_root(link)
+    re_pattern = r'^/{1}[a-zA-Z0-9]'
     if items:
         dir_name = name + '_files'
         path = os.path.join(output, dir_name)
@@ -31,7 +32,7 @@ def change_html(
 
         for item in items:
             file_path = get_file_path(item, root)
-            if file_path.startswith('/'):
+            if re.match(re_pattern, file_path):
                 file_info = create_file_info(path, root, file_path)
                 content = get_request(
                     file_info.get('url'),
