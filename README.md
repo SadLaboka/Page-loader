@@ -40,5 +40,5 @@ options:
 
 ## Saving page:
 
-[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/8CC14dTa7HV2v372A1oV19Ise)
+[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/GSZDsfuOzG9rG7OeYeAjuFU4r)
 
