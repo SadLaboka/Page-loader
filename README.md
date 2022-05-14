@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ccc0b00a72d0274b8fa4/maintainability)](https://codeclimate.com/github/SadLaboka/python-project-lvl3/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ccc0b00a72d0274b8fa4/test_coverage)](https://codeclimate.com/github/SadLaboka/python-project-lvl3/test_coverage)
 
-Page-loader is a simple CLI-tool to download a web page and its static files to a local computer.
+Page-loader is a simple CLI tool for loading a web page and its static files on your local machine. The program changes the paths of static files in html to local ones and fixes extensions.
 
 ## Installing
 
