@@ -1,6 +1,14 @@
 import os
 import tempfile
-from page_loader.file_saver import save_file
+from page_loader.storage import save_file, make_dir
+
+
+def test_make_dir():
+    dir_name = 'test'
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        full_path = os.path.join(tmpdirname, dir_name)
+        make_dir(full_path)
+        assert os.path.exists(full_path)
 
 
 def test_save_file():

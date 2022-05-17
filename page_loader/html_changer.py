@@ -1,6 +1,9 @@
 """Works with files and their paths"""
+import logging
 import os
 import re
+import sys
+
 import bs4.element
 import requests
 from bs4 import BeautifulSoup
@@ -10,8 +13,10 @@ from page_loader.filename_changer import (
     get_root,
     add_extension
 )
-from page_loader.file_saver import save_file
-from page_loader.http_request import get_request
+from page_loader.storage import make_dir, save_file, StorageException
+from page_loader.network import get_request
+
+logger = logging.getLogger("best_logger")
 
 
 def change_html(
@@ -28,20 +33,17 @@ def change_html(
     if items:
         dir_name = name + '_files'
         path = os.path.join(output, dir_name)
-        os.mkdir(path)
+        try:
+            make_dir(path)
+        except StorageException as error:
+            logger.error(error, exc_info=sys.exc_info())
 
         for item in items:
             file_path = get_file_path(item, root)
             if re.match(re_pattern, file_path):
-                file_info = create_file_info(path, root, file_path)
-                content = get_request(
-                    file_info.get('url'),
-                    client)
-                save_file(content, file_info.get('path'))
-                file_local_path = os.path.join(
-                    dir_name,
-                    file_info.get('name'))
-                change_file_path(file_local_path, item)
+                change_item_to_local(
+                    file_path, dir_name, path, root, item, client
+                )
 
     updated_html = soup.prettify()
     return updated_html
@@ -93,3 +95,26 @@ def create_file_info(path: str,
         'url': url
     }
     return file_info
+
+
+def change_item_to_local(
+        file_path: str,
+        dir_name: str,
+        path: str,
+        root: str,
+        item: bs4.element.Tag,
+        client):
+    """Saves a static file from a tag locally.
+    Changes the link of a static file in a tag to a local path"""
+    file_info = create_file_info(path, root, file_path)
+    content = get_request(
+        file_info.get('url'),
+        client)
+    try:
+        save_file(content, file_info.get('path'))
+    except StorageException as err:
+        logger.error(err, exc_info=sys.exc_info())
+    file_local_path = os.path.join(
+        dir_name,
+        file_info.get('name'))
+    change_file_path(file_local_path, item)

@@ -15,9 +15,10 @@ root = 'https://ru.hexlet.io'
 
 
 class FakeClient:
-    def __init__(self, content, text):
+    def __init__(self, content, text, status_code):
         self.content = content
         self.text = text
+        self.status_code = status_code
 
     def get(self, link):
         return self
@@ -45,7 +46,7 @@ def test_change_html(soup_fixture):
             root,
             name,
             tmpdirname,
-            client=FakeClient(content, text))
+            client=FakeClient(content, text, 200))
         path = os.path.join(tmpdirname, dir_name)
         full_image_path = os.path.join(path, image_name)
         assert updated_html == after
