@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 import argparse
+import logging.config
 import os
+import sys
 from page_loader import download
+from page_loader.logger_config import get_logger_config
+from page_loader.storage import StorageException
+from page_loader.network import NetworkException
 
 
 def main():
@@ -15,8 +20,18 @@ def main():
                         required=False
                         )
     args = parser.parse_args()
+    output = args.output
+    link = args.link
 
-    print(download(args.link, args.output))
+    logging.config.dictConfig(get_logger_config(output))
+    logger = logging.getLogger('best_logger')
+
+    try:
+        logger.warning(f'Trying to save the page: {link}')
+        print(download(link, output))
+    except (NetworkException, StorageException) as error:
+        logger.error(error, exc_info=sys.exc_info())
+        logger.warning('Saving failed')
 
 
 if __name__ == '__main__':

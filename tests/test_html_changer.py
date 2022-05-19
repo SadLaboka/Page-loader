@@ -23,6 +23,9 @@ class FakeClient:
     def get(self, link):
         return self
 
+    def raise_for_status(self):
+        return
+
 
 @pytest.fixture()
 def soup_fixture():

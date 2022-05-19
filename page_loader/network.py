@@ -19,6 +19,7 @@ def get_request(link: str, client=requests):
         logger.debug(f'Trying to connect: {link}')
 
         response = client.get(link)
+        response.raise_for_status()
     except (requests.RequestException, requests.exceptions.HTTPError) as err:
         raise NetworkException(f'Can\'t connect to {link}') from err
     else:
