@@ -10,6 +10,7 @@ from page_loader.filename_changer import (
 )
 from page_loader.network import get_request
 from page_loader.storage import make_dir, save_file, StorageException
+from progress.bar import FillingSquaresBar
 
 logger = logging.getLogger("best_logger")
 
@@ -65,24 +66,29 @@ def change_links_to_local(
 ):
     """Saves a static files from a tags locally.
     Changes the links of a static files in a tags to a local paths"""
-    for tag in tags:
-        file_info = create_file_info(path, root, tag)
-        content = get_request(
-            file_info.get('url'),
-            client
-        )
-        try:
-            save_file(content, file_info.get('path'))
-        except StorageException as err:
-            logger.error(err, exc_info=sys.exc_info())
-        file_local_path = os.path.join(
-            dir_name,
-            file_info.get('name'))
 
-        if tag.get('src'):
-            tag['src'] = file_local_path
-        elif tag.get('href'):
-            tag['href'] = file_local_path
+    with FillingSquaresBar('Downloading resources:', max=len(tags)) as bar:
+        bar.suffix = '%(percent).1f%%  [0:00:%(elapsed).02d] (%(index).d/%(max).d)'
+        for tag in tags:
+            file_info = create_file_info(path, root, tag)
+            content = get_request(
+                file_info.get('url'),
+                client
+            )
+            try:
+                save_file(content, file_info.get('path'))
+            except StorageException as err:
+                logger.error(err, exc_info=sys.exc_info())
+            file_local_path = os.path.join(
+                dir_name,
+                file_info.get('name'))
+
+            if tag.get('src'):
+                tag['src'] = file_local_path
+            elif tag.get('href'):
+                tag['href'] = file_local_path
+
+            bar.next()
 
 
 def get_tags(soup: bs4.BeautifulSoup, root: str) -> list:

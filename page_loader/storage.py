@@ -30,13 +30,16 @@ def make_dir(path: str) -> None:
 
 def save_file(content: bytes, full_path: str) -> None:
     """Saves content to a local file"""
-    try:
-        logger.debug(f'Trying to save {full_path}')
-        with open(full_path, 'wb') as f:
-            f.write(content)
-    except (FileNotFoundError, PermissionError) as err:
-        raise StorageException(
-            f'Can\'t save file {full_path}'
-        ) from err
+    logger.debug(f'Trying to save {full_path}')
+    if not os.path.exists(full_path):
+        try:
+            with open(full_path, 'wb') as f:
+                f.write(content)
+        except (FileNotFoundError, PermissionError) as err:
+            raise StorageException(
+                f'Can\'t save file {full_path}'
+            ) from err
+        else:
+            logger.debug('Save was successful')
     else:
-        logger.debug('Save was successful')
+        logger.debug(f'File {full_path} already exists')

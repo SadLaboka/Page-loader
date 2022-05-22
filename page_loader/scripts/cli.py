@@ -28,7 +28,7 @@ def main():
 
     try:
         logger.warning(f'Trying to save the page: {link}')
-        print(download(link, output))
+        print(f'Page was downloaded as \'{download(link, output)}\'')
     except (NetworkException, StorageException) as error:
         logger.error(error, exc_info=sys.exc_info())
         logger.warning('Saving failed')
