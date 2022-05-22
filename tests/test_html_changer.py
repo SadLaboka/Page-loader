@@ -3,11 +3,12 @@ import pytest
 import tempfile
 from bs4 import BeautifulSoup
 from page_loader.html_changer import (
-    change_file_path,
     change_html,
     create_file_info,
-    get_file_path,
-    get_items
+    get_tags,
+    is_third,
+    get_file_link,
+    remove_root
 )
 
 content = b'123213testtest'
@@ -60,33 +61,42 @@ def test_change_html(soup_fixture):
         assert image_content == content
 
 
-def test_change_file_path(soup_fixture):
-    soup = soup_fixture
-    image = soup.find('img')
-    new_path = '/local/dir/123.png'
-    change_file_path(new_path, image)
-    assert image.get('src') == new_path
-
-
-def test_get_file_path(soup_fixture):
-    soup = soup_fixture
-    tag = soup.img
-    path = tag.get('src')
-    assert get_file_path(tag, root) == path
-
-
-def test_get_items(soup_fixture):
+def test_get_tags(soup_fixture):
     soup = soup_fixture
     items = soup.find_all(['img', 'script', 'link'])
-    assert get_items(soup) == items
+    result_list = [items[1], items[2], items[3], items[5]]
+    assert get_tags(soup, root) == result_list
 
 
-def test_create_file_info():
+def test_create_file_info(soup_fixture):
+    tag = soup_fixture.find('img')
     path = '/var/tmp/'
-    file_path = '/content/25.jpg'
     result = {
-        'path': '/var/tmp/ru-hexlet-io-content-25.jpg',
-        'name': 'ru-hexlet-io-content-25.jpg',
-        'url': 'https://ru.hexlet.io/content/25.jpg'
+        'path': '/var/tmp/ru-hexlet-io-assets-professions-nodejs.png',
+        'name': 'ru-hexlet-io-assets-professions-nodejs.png',
+        'url': 'https://ru.hexlet.io/assets/professions/nodejs.png'
     }
-    assert create_file_info(path, root, file_path) == result
+    assert create_file_info(path, root, tag) == result
+
+
+def test_is_third(soup_fixture):
+    tags = soup_fixture.find_all(['img', 'script', 'link'])
+    assert is_third(tags[0], root) is False
+    assert is_third(tags[1], root) is True
+    assert is_third(tags[5], root) is True
+
+
+def test_get_file_link(soup_fixture):
+    tags = soup_fixture.find_all(['img', 'script', 'link'])
+    link1 = 'https://cdn2.hexlet.io/assets/menu.css'
+    link2 = '/packs/js/runtime.js'
+    assert get_file_link(tags[0], root) == link1
+    assert get_file_link(tags[5], root) == link2
+    assert tags[5]['src'] == link2
+
+
+def test_remove_root(soup_fixture):
+    tags = soup_fixture.find_all(['img', 'script', 'link'])
+    result = '/packs/js/runtime.js'
+    remove_root(tags[5], 'src')
+    assert tags[5]['src'] == result
