@@ -9,7 +9,7 @@ Page-loader is a simple CLI tool for loading a web page and its static files on 
 ## Installing
 
 ```
-pip install --user --index-url https://test.pypi.org/simple/ page-loader-sadlaboka
+pip install --user --index-url https://test.pypi.org/simple/ sadlaboka-page-loader
 ```
 
 ## Usage
