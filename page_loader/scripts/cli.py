@@ -14,7 +14,7 @@ def main():
      to the specified directory"""
     parser = argparse.ArgumentParser(description='Page-loader')
     parser.add_argument('link', metavar='link', type=str)
-    parser.add_argument('--output',
+    parser.add_argument('-o', '--output',
                         help='set the save path',
                         default=os.getcwd(),
                         required=False
