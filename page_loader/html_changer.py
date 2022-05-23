@@ -10,7 +10,7 @@ from page_loader.filename_changer import (
 )
 from page_loader.network import get_request
 from page_loader.storage import make_dir, save_file, StorageException
-from progress.bar import FillingSquaresBar
+from alive_progress import alive_bar
 
 logger = logging.getLogger("best_logger")
 
@@ -67,8 +67,8 @@ def change_links_to_local(
     """Saves a static files from a tags locally.
     Changes the links of a static files in a tags to a local paths"""
 
-    with FillingSquaresBar('Downloading resources:', max=len(tags)) as bar:
-        bar.suffix = '%(percent).1f%%  [0:00:%(elapsed).02d] (%(index).d/%(max).d)'
+    with alive_bar(total=len(tags)) as bar:
+        bar.title('Downloading resources: ')
         for tag in tags:
             file_info = create_file_info(path, root, tag)
             content = get_request(
@@ -88,7 +88,7 @@ def change_links_to_local(
             elif tag.get('href'):
                 tag['href'] = file_local_path
 
-            bar.next()
+            bar()
 
 
 def get_tags(soup: bs4.BeautifulSoup, root: str) -> list:
