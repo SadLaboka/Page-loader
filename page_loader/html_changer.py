@@ -5,12 +5,15 @@ import re
 import requests
 import sys
 from bs4 import BeautifulSoup
+from concurrent import futures
 from page_loader.filename_changer import (
     add_extension, get_name, get_root, get_path_from_link
 )
 from page_loader.network import get_request
 from page_loader.storage import make_dir, save_file, StorageException
 from alive_progress import alive_bar
+
+bar = None
 
 logger = logging.getLogger("best_logger")
 
@@ -34,7 +37,20 @@ def change_html(
         except StorageException as error:
             logger.error(error, exc_info=sys.exc_info())
 
-        change_links_to_local(tags, dir_name, path, root, client)
+        global bar
+        with alive_bar(total=len(tags)) as bar:
+            bar.title('Downloading resources: ')
+            with futures.ThreadPoolExecutor(max_workers=4) as executor:
+                for tag in tags:
+                    executor.submit(
+                        change_link_to_local,
+                        tag,
+                        dir_name,
+                        path,
+                        root,
+                        client,
+                        bar
+                    )
 
     updated_html = soup.prettify()
     return updated_html
@@ -61,34 +77,32 @@ def create_file_info(path: str,
     return file_info
 
 
-def change_links_to_local(
-        tags: list, dir_name: str, path: str, root: str, client
+def change_link_to_local(
+        tag: bs4.element.Tag, dir_name: str, path: str, root: str, client, bar
 ):
     """Saves a static files from a tags locally.
     Changes the links of a static files in a tags to a local paths"""
 
-    with alive_bar(total=len(tags)) as bar:
-        bar.title('Downloading resources: ')
-        for tag in tags:
-            file_info = create_file_info(path, root, tag)
-            content = get_request(
-                file_info.get('url'),
-                client
-            )
-            try:
-                save_file(content, file_info.get('path'))
-            except StorageException as err:
-                logger.error(err, exc_info=sys.exc_info())
-            file_local_path = os.path.join(
-                dir_name,
-                file_info.get('name'))
+    file_info = create_file_info(path, root, tag)
+    content = get_request(
+        file_info.get('url'),
+        client
+    )
 
-            if tag.get('src'):
-                tag['src'] = file_local_path
-            elif tag.get('href'):
-                tag['href'] = file_local_path
+    try:
+        save_file(content, file_info.get('path'))
+    except StorageException as err:
+        logger.error(err, exc_info=sys.exc_info())
+    file_local_path = os.path.join(
+        dir_name,
+        file_info.get('name'))
 
-            bar()
+    if tag.get('src'):
+        tag['src'] = file_local_path
+    elif tag.get('href'):
+        tag['href'] = file_local_path
+
+    bar()
 
 
 def get_tags(soup: bs4.BeautifulSoup, root: str) -> list:
