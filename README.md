@@ -9,7 +9,7 @@ Page-loader is a simple CLI tool for loading a web page and its static files on 
 ## Installing
 
 ```
--
+pip install --user --index-url https://test.pypi.org/simple/ page-loader-sadlaboka
 ```
 
 ## Usage
@@ -40,5 +40,5 @@ options:
 
 ## Saving page:
 
-[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/QNXzvrQegdVQDFjyA1fhSkq5T)
+[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/veawVa4WKiEFLxr8NnOInqR2m)
 
