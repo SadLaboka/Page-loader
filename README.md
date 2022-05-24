@@ -39,5 +39,5 @@ options:
 
 ## Saving page:
 
-[![asciicast](https://github.com/SadLaboka/page-loader/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/veawVa4WKiEFLxr8NnOInqR2m)
+[![asciicast](https://github.com/SadLaboka/page-loader/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/gejvCTCFmq4qnTzMPYzsdEKww)
 
