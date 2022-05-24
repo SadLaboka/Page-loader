@@ -15,12 +15,6 @@ test_config = {
         }
     },
     'handlers': {
-        'file': {
-            'class': 'logging.FileHandler',
-            'level': 'DEBUG',
-            'formatter': 'file_format',
-            'filename': 'test/logger.log'
-        },
         'console': {
             'class': 'logging.StreamHandler',
             'level': 'WARNING',
@@ -38,4 +32,4 @@ test_config = {
 
 
 def test_get_logger_config():
-    assert get_logger_config('test') == test_config
+    assert get_logger_config() == test_config
