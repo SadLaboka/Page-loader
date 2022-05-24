@@ -24,7 +24,7 @@ test_config = {
     'loggers': {
         'best_logger': {
             'level': 'DEBUG',
-            'handlers': ['file', 'console'],
+            'handlers': ['console'],
             'propagate': False
         }
     }
