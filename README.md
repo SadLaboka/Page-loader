@@ -1,5 +1,5 @@
 # Page-loader
-[![flake8 and pytest](https://github.com/SadLaboka/python-project-lvl3/actions/workflows/main.yml/badge.svg)](https://github.com/SadLaboka/python-project-lvl3/actions/workflows/main.yml)
+[![flake8 and pytest](https://github.com/SadLaboka/page-loader/actions/workflows/main.yml/badge.svg)](https://github.com/SadLaboka/page-loader/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ccc0b00a72d0274b8fa4/maintainability)](https://codeclimate.com/github/SadLaboka/python-project-lvl3/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ccc0b00a72d0274b8fa4/test_coverage)](https://codeclimate.com/github/SadLaboka/python-project-lvl3/test_coverage)
 
@@ -39,5 +39,5 @@ options:
 
 ## Saving page:
 
-[![asciicast](https://github.com/SadLaboka/python-project-lvl3/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/veawVa4WKiEFLxr8NnOInqR2m)
+[![asciicast](https://github.com/SadLaboka/page-loader/blob/main/docs/downloading_page.svg)](https://asciinema.org/a/veawVa4WKiEFLxr8NnOInqR2m)
 
