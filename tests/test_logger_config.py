@@ -1,5 +1,7 @@
 from page_loader.logger_config import get_logger_config
 
+full_path = 'test/logger.log'
+
 test_config = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -15,6 +17,12 @@ test_config = {
         }
     },
     'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'level': 'DEBUG',
+            'formatter': 'file_format',
+            'filename': f'{full_path}'
+        },
         'console': {
             'class': 'logging.StreamHandler',
             'level': 'WARNING',
@@ -24,7 +32,7 @@ test_config = {
     'loggers': {
         'best_logger': {
             'level': 'DEBUG',
-            'handlers': ['console'],
+            'handlers': ['file', 'console'],
             'propagate': False
         }
     }
@@ -32,4 +40,4 @@ test_config = {
 
 
 def test_get_logger_config():
-    assert get_logger_config() == test_config
+    assert get_logger_config('test') == test_config

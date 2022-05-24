@@ -23,7 +23,7 @@ def main():
     output = args.output
     link = args.link
 
-    logging.config.dictConfig(get_logger_config())
+    logging.config.dictConfig(get_logger_config(output))
     logger = logging.getLogger('best_logger')
 
     try:
